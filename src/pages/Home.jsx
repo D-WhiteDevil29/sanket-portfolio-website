@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom"; 
 import styled from "styled-components";
 import ProjectCard from "../components/ProjectCard";
-import gigsterrLogo from "/home-imax.jpg";
-import googleMapsLogo from "/home-google.jpg";
+import gigsterrLogo from "/home-gigsterr.png";
+import googleMapsLogo from "/home-gmap.png";
 import imaxLogo from "/home-imax.jpg";
 import vectorCharacters from "/home-vector-project.jpg";
 
@@ -65,18 +65,19 @@ const Title = styled.h1`
   color: #092A5B;
   letter-spacing: 10px;
   text-transform: normal;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+  text-shadow: 
+    10px 6px 14px rgba(31, 32, 48, 0.15), /* First shadow */
+    -10px -10px 16px rgba(255, 255, 255, 1); /* Second shadow */
   margin-bottom: 3rem;
   font-family: "Ubuntu", sans-serif;
   font-weight: 700;
   font-style: normal;
 
   @media (max-width: 768px) {
-    font-size: 40px;
+    font-size: 64px;
     letter-spacing: 4px;
   }
 `;
-
 const Subtitle = styled.h2`
   font-size: 22px;
   font-weight: 600;
@@ -130,26 +131,11 @@ const LinkItem = styled.a`
   overflow: hidden;
   transition: all 0.3s ease-in-out;
   z-index: 1;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 100%;
-    width: 100%;
-    height: 100%;
-    background-color: #092A5B;
-    transition: right 0.3s ease-in-out;
-    z-index: -1;
-  }
+  cursor: pointer;
 
   &:hover {
-    color: #FFF;
-    cursor: pointer;
-  }
-
-  &:hover::before {
-    right: 0;
+    box-shadow: 6px 6px 14px 0px rgba(82, 82, 82, 0.20);
+    scale: 1.05;
   }
 
   @media (max-width: 768px) {
@@ -218,10 +204,11 @@ const NavContainer = styled.div`
 
   @media (max-width: 768px) {
     position: absolute;
+    width: 180px;
+    height: 300px;
     top: 0; /* Align to the top */
     right: 20px;
     margin-left: 0; /* Remove margin on mobile */
-    height: auto; /* Remove height constraint on mobile */
     max-width: none; /* Remove width constraint on mobile */
   }
 `;
@@ -250,28 +237,44 @@ const NavLinks = styled.div`
 
 /* Styled Link for React Router */
 const StyledLink = styled(Link)`
-  font-size: 16px;
-  font-weight: 500;
-  color: #092A5B;
+  font-size: 21px;
+  color: ${(props) => (props.active ? '#092A5B' : '#525252')};
+  font-weight: 400;
+  font-family: lato, sans-serif;
   text-decoration: none;
   display: flex;
   align-items: center;
   position: relative;
   cursor: pointer;
+  min-height: 30px; /* Ensure a minimum height for the pseudo-element to work with */
 
   &::before {
     content: "";
-    width: ${(props) => (props.active ? "4px" : "0")};
+    width: ${(props) => (props.active ? "5px" : "0")};
     height: 100%;
     background-color: #092A5B;
     position: absolute;
     left: -12px;
-    transition: width 0.3s;
+    /* Clip-path for trapezoid shape: taller left, shorter right */
+    clip-path: polygon(
+      0 0,              /* Top-left */
+      100% 10%,         /* Top-right (shortened) */
+      100% 90%,         /* Bottom-right (shortened) */
+      0 100%            /* Bottom-left */
+    );
+    transition: width 0.3s ease, clip-path 0.3s ease;
   }
 
-  &:hover::before {
-    width: 8px;
-  }
+  // &:hover::before {
+  //   width: 8px;
+  //   /* Adjust clip-path for wider bar, maintaining the taper */
+  //   clip-path: polygon(
+  //     0 0,
+  //     100% 5%,          /* Tighter taper on hover */
+  //     100% 95%,         /* Tighter taper on hover */
+  //     0 100%
+  //   );
+  // }
 `;
 
 /* Hamburger Menu */
@@ -363,8 +366,10 @@ const Home = () => {
         <Header>
           <TitleContainer>
             <Title>Portfolio</Title>
+            <div style={{ textAlign: "start"}}>
             <Subtitle>Sanket Choukate</Subtitle>
             <Description>Designer | Thinker | Problem Solver</Description>
+            </div>
             <Links>
               <LinkItemActive href="#">My Work</LinkItemActive>
               <LinkItem href="#">Get In Touch</LinkItem>
@@ -383,7 +388,7 @@ const Home = () => {
                 <StyledLink
                   key={name}
                   to={path}
-                  active={activeLink === name ? 1 : 0}
+                  active={activeLink == name ? 1 : 0}
                   onClick={() => {
                     setActiveLink(name);
                     setMenuOpen(false);
