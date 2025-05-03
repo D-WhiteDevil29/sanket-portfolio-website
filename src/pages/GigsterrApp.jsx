@@ -2,8 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import Button from '../components/Button.jsx';
 import Navbar from '../components/Navbar.jsx';
+import { ScrollToTopButton } from "./ActivityPage.jsx";
+import { IoIosArrowUp } from "react-icons/io";
 
 const GigsterrApp = () => {
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <>
     <Navbar/>
@@ -166,6 +175,10 @@ const GigsterrApp = () => {
         </RoadmapItems>
       </RoadmapContainer>
     </PageContainer>
+
+    <ScrollToTopButton onClick={scrollToTop}>
+              <IoIosArrowUp />
+            </ScrollToTopButton>
     </Container>
     </>
   );

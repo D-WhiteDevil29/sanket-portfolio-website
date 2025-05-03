@@ -2,8 +2,16 @@ import Navbar from "../components/Navbar";
 import styled from "styled-components";
 import Button from "../components/Button.jsx";
 import ProblemComponent from "../components/ProblemComponent.jsx";
+import { ScrollToTopButton } from "./ActivityPage.jsx";
+import { IoIosArrowUp } from "react-icons/io";
 
 const IMaxOptics = () => {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <>
       <Navbar />
@@ -25,7 +33,9 @@ const IMaxOptics = () => {
               appropriate for the healthcare domain.
             </Description>
           </LeftContent>
-          <RightContent></RightContent>
+          <RightContent>
+            <AppImage src="/imax-main.png" alt="App Preview" />
+          </RightContent>
         </AppSection>
 
         {/* Problem Component */}
@@ -90,6 +100,10 @@ const IMaxOptics = () => {
           </SocialMediaGrid>
           <SmallTitle>Social Media</SmallTitle>
         </SocialMediaSection>
+
+        <ScrollToTopButton onClick={scrollToTop}>
+            <IoIosArrowUp />
+        </ScrollToTopButton>
       </Container>
     </>
   );
@@ -169,7 +183,7 @@ const Description = styled.p`
 const AppImage = styled.img`
   width: 370px;
   position: absolute;
-  top: -22%;
+  top: -38%;
   right: 0;
   height: 370px;
   border-radius: 15px;

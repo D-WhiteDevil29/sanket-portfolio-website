@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 import Navbar from "../components/Navbar";
+import { IoIosArrowUp } from "react-icons/io"; // Import the FaArrowUp icon
 
 // Bind modal to the app element for accessibility
 Modal.setAppElement("#root");
@@ -147,7 +148,6 @@ const WatchButton = styled.button`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  text-decoration-line: underline;
   text-decoration-style: solid;
   text-decoration-skip-ink: auto;
   text-decoration-thickness: auto;
@@ -193,12 +193,42 @@ const ImageCaption = styled.p`
 const FooterText = styled.p`
   color: #092A5B;
   text-align: center;
-  font-family: Ubuntu;
+  font-family: Ubuntu, sans-serif;
   font-size: 21px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
   margin-top: 60px;
+  margin-bottom: 80px; /* Add margin to ensure button doesn't overlap */
+`;
+
+export const ScrollToTopButton = styled.button`
+  position: relative;
+  bottom: 20px;
+  margin-top: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background-color: rgba(150, 160, 180, 0.2);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+
+  &:hover {
+    background-color: rgba(150, 160, 180, 0.4);
+    transform: translateX(-50%) scale(1.1);
+  }
+
+  svg {
+    font-size: 20px;
+    color: #092A5B;
+  }
 `;
 
 const ModalOverlay = styled.div`
@@ -320,6 +350,7 @@ const CloseButton = styled.button`
     transform: rotate(90deg);
   }
 `;
+
 const CloseButtonImageModal = styled.button`
   position: absolute;
   top: 15px;
@@ -423,7 +454,7 @@ const ActivityPage = () => {
   const openImageModal = (imageSrc, caption) => {
     setCurrentImage(imageSrc);
     setCurrentCaption(caption);
-    setZoomLevel(1); // Reset zoom on open
+    setZoomLevel(1);
     setImageModalIsOpen(true);
   };
 
@@ -435,11 +466,11 @@ const ActivityPage = () => {
   };
 
   const handleZoomIn = () => {
-    setZoomLevel(prev => Math.min(prev + 0.2, 3)); // Max zoom: 3x
+    setZoomLevel(prev => Math.min(prev + 0.2, 3));
   };
 
   const handleZoomOut = () => {
-    setZoomLevel(prev => Math.max(prev - 0.2, 0.5)); // Min zoom: 0.5x
+    setZoomLevel(prev => Math.max(prev - 0.2, 0.5));
   };
 
   const handleWheel = (e) => {
@@ -449,6 +480,13 @@ const ActivityPage = () => {
     } else {
       handleZoomOut();
     }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const videos = [
@@ -488,7 +526,6 @@ const ActivityPage = () => {
     <>
       <Navbar />
       <Container>
-        {/* Header Section */}
         <HeaderSection>
           <ProfileImage src="/Activity-main-img.png" alt="Profile" />
           <HeaderText>
@@ -507,7 +544,6 @@ const ActivityPage = () => {
           </HeaderText>
         </HeaderSection>
 
-        {/* Video Section */}
         <VideoSection>
           <CardContainer>
             {videos.map((video, index) => (
@@ -524,7 +560,6 @@ const ActivityPage = () => {
           </CardContainer>
         </VideoSection>
 
-        {/* Image Section */}
         <ImageSection>
           <CardContainer>
             {images.map((image, index) => (
@@ -540,12 +575,14 @@ const ActivityPage = () => {
           </CardContainer>
         </ImageSection>
 
-        {/* Footer Text */}
         <FooterText>
           Let’s catch up for a jamming session and a cup of coffee!
         </FooterText>
 
-        {/* Modal for Video Playback */}
+        <ScrollToTopButton onClick={scrollToTop}>
+          <IoIosArrowUp />
+        </ScrollToTopButton>
+
         <Modal
           isOpen={videoModalIsOpen}
           onRequestClose={closeVideoModal}
@@ -563,7 +600,6 @@ const ActivityPage = () => {
           />
         </Modal>
 
-        {/* Modal for Image Viewing */}
         <Modal
           isOpen={imageModalIsOpen}
           onRequestClose={closeImageModal}

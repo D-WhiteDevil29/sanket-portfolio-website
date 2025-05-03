@@ -6,6 +6,8 @@ import gigsterrLogo from "/home-gigsterr.png";
 import googleMapsLogo from "/home-gmap.png";
 import imaxLogo from "/home-imax.jpg";
 import vectorCharacters from "/home-vector-project.jpg";
+import { IoIosArrowUp } from "react-icons/io";
+import { ScrollToTopButton } from "./ActivityPage";
 
 
 const Container = styled.div`
@@ -360,6 +362,13 @@ const Home = () => {
     { name: "Work", path: "/work/gigsterr" },
   ];
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <Container>
@@ -371,8 +380,8 @@ const Home = () => {
             <Description>Designer | Thinker | Problem Solver</Description>
             </div>
             <Links>
-              <LinkItemActive href="#">My Work</LinkItemActive>
-              <LinkItem href="#">Get In Touch</LinkItem>
+              <LinkItemActive href="/work/gigsterr">My Work</LinkItemActive>
+              <LinkItem href="/contact">Get In Touch</LinkItem>
             </Links>
           </TitleContainer>
 
@@ -407,6 +416,10 @@ const Home = () => {
             <ProjectCard key={index} {...project} />
           ))}
         </ProjectsContainer>
+
+        <ScrollToTopButton onClick={scrollToTop}>
+            <IoIosArrowUp />
+        </ScrollToTopButton>
       </Container>
     </>
   );

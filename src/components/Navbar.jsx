@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { NavLink, useLocation } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
@@ -10,19 +10,20 @@ const Nav = styled.nav`
   width: 100%;
   top: 0;
   z-index: 1000;
+  height: 66px; /* Set navbar height to 66px */
 `;
 
 const NavContainer = styled.div`
-  max-width: 1200px;
   margin: auto;
-  padding: 1rem 2rem;
+  padding: 13px 2rem; /* Adjusted padding to fit within 66px height */
   display: flex;
   gap: 1.5rem;
   align-items: center;
+  position: relative;
 `;
 
 const Logo = styled.img`
-  height: 50px;
+  height: 40px; /* Reduced height to fit within 66px navbar */
   border-radius: 50%;
 `;
 
@@ -40,9 +41,11 @@ const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   font-size: 1.1rem;
   font-weight: normal;
-  border-bottom: none;
   padding-bottom: 5px;
   color: black;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
 
   &:hover {
     color: #1e3a8a;
@@ -51,7 +54,24 @@ const StyledNavLink = styled(NavLink)`
   &.active {
     color: #1e3a8a !important;
     font-weight: bold !important;
-    border-bottom: 2px solid #1e3a8a !important;
+  }
+`;
+
+const Highlighter = styled.div`
+  position: absolute;
+  bottom: 0;
+  height: 3px;
+  width: 20px;
+  background-color: #1e3a8a;
+  clip-path: polygon(
+    10% 0,
+    90% 0,
+    100% 100%,
+    0 100%
+  );
+  transition: left 0.3s ease, transform 0.3s ease;
+   @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -122,7 +142,7 @@ const MobileMenu = styled.div`
   position: absolute;
   width: 100%;
   left: 0;
-  top: 60px;
+  top: 66px; /* Adjusted to match new navbar height */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
   @media (min-width: 769px) {
@@ -173,9 +193,43 @@ const Navbar = () => {
   const [workSubMenuOpen, setWorkSubMenuOpen] = useState(false);
   const location = useLocation();
 
+  const homeRef = useRef(null);
+  const whoAmIRef = useRef(null);
+  const workRef = useRef(null);
+  const highlighterRef = useRef(null);
+
+  const [highlighterStyle, setHighlighterStyle] = useState({
+    left: 0,
+    transform: "translateX(-50%)",
+    opacity: 0,
+  });
+
   useEffect(() => {
     const workActiveStatus = location.pathname.startsWith("/work");
     setIsWorkActive(workActiveStatus);
+
+    let activeRef;
+    if (location.pathname === "/") {
+      activeRef = homeRef;
+    } else if (location.pathname === "/who-am-i") {
+      activeRef = whoAmIRef;
+    } else if (workActiveStatus) {
+      activeRef = workRef;
+    }
+
+    if (activeRef && activeRef.current && highlighterRef.current) {
+      const linkRect = activeRef.current.getBoundingClientRect();
+      const navRect = activeRef.current.closest("nav").getBoundingClientRect();
+      const leftPosition = (linkRect.left - navRect.left) + (linkRect.width / 2);
+
+      setHighlighterStyle({
+        left: `${leftPosition}px`,
+        transform: "translateX(-50%)",
+        opacity: 1,
+      });
+    } else {
+      setHighlighterStyle({ ...highlighterStyle, opacity: 0 });
+    }
   }, [location.pathname]);
 
   const whiteBackgroundRoutes = ["/who-am-i"];
@@ -184,15 +238,18 @@ const Navbar = () => {
   return (
     <Nav whiteBackground={whiteBackground}>
       <NavContainer>
-        <Logo src="/profile.png" alt="Avatar" />
+        <Logo src="/bg-logo.png" alt="Avatar" />
         <NavLinks>
-          <StyledNavLink to="/" end>
+          <StyledNavLink to="/" end ref={homeRef}>
             Home
           </StyledNavLink>
-          <StyledNavLink to="/who-am-i">Who Am I</StyledNavLink>
+          <StyledNavLink to="/who-am-i" ref={whoAmIRef}>
+            Who Am I
+          </StyledNavLink>
           <WorkLinkWrapper>
             <StyledNavLink
               to="/work"
+              ref={workRef}
               className={({ isActive }) =>
                 isActive || isWorkActive ? "active" : ""
               }
@@ -217,6 +274,7 @@ const Navbar = () => {
         <MobileMenuButton onClick={() => setMenuOpen(!menuOpen)}>
           <FaBars />
         </MobileMenuButton>
+        <Highlighter ref={highlighterRef} style={highlighterStyle} />
       </NavContainer>
       <MobileMenu open={menuOpen}>
         <StyledNavLink to="/" end onClick={() => setMenuOpen(false)}>

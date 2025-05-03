@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Button from '../components/Button.jsx';
+import { ScrollToTopButton } from "./ActivityPage.jsx";
+import { IoIosArrowUp } from "react-icons/io";
 
 const Container = styled.div`
   font-family: 'Poppins', sans-serif;
@@ -124,11 +126,11 @@ const CardsContainerHeading = styled.h2`
 
 const CardsContainer = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 30px;
   width: 80%;
+  justify-content: center;
   margin: -190px auto 4rem auto; // This overlaps half of the 380px card height
   z-index: 2;
-  // margin: -8rem auto 4rem auto;
   @media (max-width: 768px) {
     width: 90%;
     flex-direction: column;
@@ -141,7 +143,7 @@ const Card = styled.div`
   background: white;
   padding: 20px;
   border-radius: 10px;
-  width: 310px;
+  max-width: 310px;
   height: 380px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -172,7 +174,7 @@ const CardImage = styled.div`
     border-radius: 50%;
     position: absolute;
     top: -20px;
-    right: -20px;
+    right: -40px;
     z-index: 0;
   }
 
@@ -249,7 +251,7 @@ const PhoneContainer = styled.div`
   width: fit-content;
   margin: 1.5rem auto;
   gap: 8px;
-  font-family: Lato, sans-serif;
+  font-family: ubuntu, sans-serif;
   font-size: 16px;
   font-weight: 400;
   color: #4A4A4A;
@@ -260,7 +262,14 @@ const PhoneIcon = styled.img`
   height: 20px;
 `;
 
+
 const WhoAmI = () => {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <>
       <Navbar />
@@ -313,7 +322,7 @@ const WhoAmI = () => {
             <CardText>
               Yes, you read it right! Apart from being a designer, I also have a band called BayBaak, where I play guitar. We perform at events, fests, bars and clubs.
             </CardText>
-            <Button>View Project</Button>
+            <Button>Let's Jam!</Button>
           </Card>
         </CardsContainer>
 
@@ -332,6 +341,10 @@ const WhoAmI = () => {
           <Button>View Resume</Button>
         </CatchUpSection>
         </Box>
+
+        <ScrollToTopButton onClick={scrollToTop}>
+            <IoIosArrowUp />
+        </ScrollToTopButton>
       </Container>
     </>
   );

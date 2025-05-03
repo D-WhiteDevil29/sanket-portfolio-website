@@ -1,11 +1,20 @@
 import styled from "styled-components";
 import Button from '../components/Button.jsx';
 import Navbar from '../components/Navbar.jsx';
+import { ScrollToTopButton } from "./ActivityPage.jsx";
+import { IoIosArrowUp } from "react-icons/io";
 
 
 const imageNames = Array.from({ length: 20 }, (_, index) => `image${index + 1}.png`);
 
 const VectorCharacteristicsPage = () => {
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
     return (
         <>
             <Navbar />
@@ -40,6 +49,10 @@ const VectorCharacteristicsPage = () => {
                         </GridItem>
                     ))}
                 </GridContainer>
+
+                <ScrollToTopButton onClick={scrollToTop}>
+                    <IoIosArrowUp />
+                </ScrollToTopButton>
             </Container>
         </>
     );
@@ -103,7 +116,7 @@ const AppTitle = styled.h2`
 const TagContainer = styled.div`
   display: flex;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 5px;
 `;
 
 const Tag = styled.span`
@@ -122,7 +135,8 @@ const Tag = styled.span`
 
 const Description = styled.p`
   font-size: 16px;
-  margin-top: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
   color: #525252;
   font-family: Lato;
   font-style: normal;

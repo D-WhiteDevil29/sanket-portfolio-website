@@ -3,8 +3,31 @@ import styled from "styled-components";
 import Button from '../components/Button.jsx';
 import Navbar from '../components/Navbar.jsx';
 import FeatureWalkthrough from "../components/FeatureWalkthrough.jsx";
+import { IoIosArrowUp } from "react-icons/io";
+import { ScrollToTopButton } from "./ActivityPage.jsx";
 
+/**
+ * The Google Maps Alarm System page.
+ *
+ * This page presents the Google Maps Alarm System application, which is a feature
+ * that allows users to set an alarm for a specific location while traveling and
+ * set the distance from the location, at which the alarm will be triggered.
+ *
+ * The page is divided into several sections, including a main app overview section
+ * that provides a brief overview of the application, a problem and solution section
+ * that explains the problem the application solves, a feature walkthrough section that
+ * shows how the application works, and a future roadmap and scope section that outlines
+ * the plans for future development.
+ *
+ * @return {React.ReactElement} The Google Maps Alarm System page.
+ */
 const GoogleMaps = () => {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
     return (
         <>
             <Navbar />
@@ -93,6 +116,10 @@ const GoogleMaps = () => {
                         </RoadmapItems>
                     </RoadmapContainer>
                 </PageContainer>
+
+                <ScrollToTopButton onClick={scrollToTop}>
+                          <IoIosArrowUp />
+                </ScrollToTopButton>
             </Container>
         </>
     );
@@ -172,7 +199,7 @@ const Description = styled.p`
 const AppImage = styled.img`
   width: 274px;
   position: absolute;
-  top: -22%;
+  top: -30%;
   right: 0;
   height: 370px;
   border-radius: 15px;
