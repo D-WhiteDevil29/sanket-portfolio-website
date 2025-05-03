@@ -26,26 +26,6 @@ const Card = styled.div`
   }
 `;
 
-const Image = styled.div`
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin-bottom: 16px;
-
-  @media (min-width: 768px) {
-    width: 300px;
-    height: 300px; /* Full card height */
-    margin-bottom: 0;
-  }
-
-  @media (max-width: 767px) {
-    height: 150px; /* Fixed height for mobile to ensure proper display and save space */
-    max-width: 100%; /* Ensure image fits within card width */
-  }
-`;
 
 const Content = styled.div`
   flex: 1;
@@ -127,10 +107,37 @@ const ButtonContainer = styled.div`
   }
 `;
 
+const Image = styled.div`
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 16px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  @media (min-width: 768px) {
+    width: 300px;
+    height: 300px;
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 767px) {
+    height: 150px;
+  }
+`;
+
+
 const ProjectCard = ({ title, description, tags, image, imageBg, link }) => {
   return (
     <Card>
-      <Image style={{ backgroundImage: `url(${image})`, backgroundColor: imageBg }} />
+      <Image style={{ background: imageBg }}>
+        <img src={image} alt={title} />
+      </Image>
       <Content>
         <Tags>
           {tags.map((tag, index) => (
